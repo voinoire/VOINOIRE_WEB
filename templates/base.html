@@ -43,6 +43,32 @@
       --font-size-base: 1.0625rem;
       --font-size-lg: 1.125rem;
       --transition: 0.2s ease;
+      --transition-slow: 0.4s ease;
+      --reveal-distance: 12px;
+    }
+
+    @keyframes reveal-in {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes accent-line-grow {
+      from {
+        transform: scaleX(0);
+        opacity: 0.4;
+      }
+
+      to {
+        transform: scaleX(1);
+        opacity: 1;
+      }
     }
 
     * {
@@ -305,6 +331,13 @@
       border: 1px solid var(--color-border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+    }
+
+    #profile .profile-card:hover {
+      border-color: color-mix(in srgb, var(--color-accent) 35%, var(--color-border));
+      box-shadow: var(--shadow-md);
+      transform: translateY(-2px);
     }
 
     #profile p {
@@ -364,6 +397,13 @@
       color: #fff;
       background: var(--link-accent, var(--color-accent));
       box-shadow: 0 2px 8px color-mix(in srgb, var(--link-accent, var(--color-accent)) 35%, transparent);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .link-card:hover .link-card__icon,
+    .link-card:focus-visible .link-card__icon {
+      transform: scale(1.08);
+      box-shadow: 0 4px 14px color-mix(in srgb, var(--link-accent, var(--color-accent)) 45%, transparent);
     }
 
     .link-card__body {
@@ -540,6 +580,68 @@
       background: var(--color-accent);
       border-radius: 999px;
       margin-bottom: var(--space-md);
+      transform-origin: left center;
+      animation: accent-line-grow 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
+    }
+
+    /* —— Scroll reveal (package A) —— */
+    @supports (animation-timeline: view()) {
+      #profile .profile-card,
+      #links .link-hub,
+      #project .project-feature,
+      #contact .contact-list {
+        animation-name: reveal-in;
+        animation-duration: 1ms;
+        animation-timing-function: linear;
+        animation-fill-mode: both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 100%;
+      }
+    }
+
+    @supports not (animation-timeline: view()) {
+      #profile .profile-card {
+        animation: reveal-in 0.6s ease-out 0.08s both;
+      }
+
+      #links .link-hub {
+        animation: reveal-in 0.6s ease-out 0.16s both;
+      }
+
+      #project .project-feature {
+        animation: reveal-in 0.6s ease-out 0.24s both;
+      }
+
+      #contact .contact-list {
+        animation: reveal-in 0.6s ease-out 0.32s both;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hero__accent-line {
+        animation: none;
+        transform: none;
+        opacity: 1;
+      }
+
+      #profile .profile-card,
+      #links .link-hub,
+      #project .project-feature,
+      #contact .contact-list {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+
+      .link-card:hover .link-card__icon,
+      .link-card:focus-visible .link-card__icon,
+      .link-card:hover,
+      .link-card:focus-visible,
+      #profile .profile-card:hover,
+      .project-feature:hover .project-feature__media img,
+      .project-feature__cta:hover {
+        transform: none;
+      }
     }
 
     /* —— Contact —— */
@@ -704,6 +806,7 @@
 
       .hero__accent-line {
         margin-inline: auto;
+        transform-origin: center center;
       }
 
       .hero__tagline {
