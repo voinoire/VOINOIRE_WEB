@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Name Surname — digital profile{% endblock %}
+{% block meta_description %}Short description for search engines. Replace with your own text.{% endblock %}
+{% block logo %}Name S.{% endblock %}
+
+{% block content %}
+<section class="hero" id="top">
+  <div class="hero__accent-line"></div>
+  <h1>Name Surname</h1>
+  <p class="hero__tagline">A short tagline about what you do. Write 1–2 sentences.</p>
+</section>
+
+<section id="about">
+  <p class="section-label">About</p>
+  <h2>Who I am</h2>
+  <p>
+    Your bio goes here. Describe your interests, what you offer, and what you are
+    looking for. This is a placeholder — replace it manually in
+    <code>templates/index.en.html</code>.
+  </p>
+</section>
+
+<section id="skills">
+  <p class="section-label">Skills</p>
+  <h2>Stack &amp; tools</h2>
+  <div class="tags">
+    <span class="tag">HTML</span>
+    <span class="tag">Python</span>
+    <span class="tag">…</span>
+  </div>
+</section>
+
+<section id="projects">
+  <p class="section-label">Projects</p>
+  <h2>Selected work</h2>
+  <div class="card-grid">
+    <article class="card">
+      <h3>Project name</h3>
+      <p>Short description. Add a link and details later.</p>
+    </article>
+    <article class="card">
+      <h3>Second project</h3>
+      <p>Another placeholder card to keep the page structure.</p>
+    </article>
+  </div>
+</section>
+
+<section id="contact">
+  <p class="section-label">Contact</p>
+  <h2>Get in touch</h2>
+  <ul class="contact-list">
+    <li>Email: <a href="mailto:you@example.com">you@example.com</a></li>
+    <li>GitHub: <a href="#">link coming soon</a></li>
+  </ul>
+</section>
+{% endblock %}

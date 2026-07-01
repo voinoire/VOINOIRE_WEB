@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Имя Фамилия — цифровой профиль{% endblock %}
+{% block meta_description %}Краткое описание для поисковиков. Замените этот текст на своё.{% endblock %}
+{% block logo %}Имя Ф.{% endblock %}
+
+{% block content %}
+<section class="hero" id="top">
+  <div class="hero__accent-line"></div>
+  <h1>Имя Фамилия</h1>
+  <p class="hero__tagline">Короткий слоган о том, чем вы занимаетесь. Напишите 1–2 предложения.</p>
+</section>
+
+<section id="about">
+  <p class="section-label">Обо мне</p>
+  <h2>Кто я</h2>
+  <p>
+    Здесь ваш текст о себе. Расскажите, чем интересуетесь, чем полезны,
+    что ищете. Этот абзац — placeholder: замените его своим текстом вручную
+    в файле <code>templates/index.ru.html</code>.
+  </p>
+</section>
+
+<section id="skills">
+  <p class="section-label">Навыки</p>
+  <h2>Стек и инструменты</h2>
+  <div class="tags">
+    <span class="tag">HTML</span>
+    <span class="tag">Python</span>
+    <span class="tag">…</span>
+  </div>
+</section>
+
+<section id="projects">
+  <p class="section-label">Проекты</p>
+  <h2>Избранное</h2>
+  <div class="card-grid">
+    <article class="card">
+      <h3>Название проекта</h3>
+      <p>Краткое описание. Ссылку и детали добавите позже.</p>
+    </article>
+    <article class="card">
+      <h3>Второй проект</h3>
+      <p>Ещё одна карточка-заглушка для структуры страницы.</p>
+    </article>
+  </div>
+</section>
+
+<section id="contact">
+  <p class="section-label">Контакты</p>
+  <h2>Связаться</h2>
+  <ul class="contact-list">
+    <li>Email: <a href="mailto:you@example.com">you@example.com</a></li>
+    <li>GitHub: <a href="#">ссылка добавится позже</a></li>
+  </ul>
+</section>
+{% endblock %}
