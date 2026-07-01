@@ -581,58 +581,32 @@
       border-radius: 999px;
       margin-bottom: var(--space-md);
       transform-origin: left center;
-      animation: accent-line-grow 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
     }
 
-    /* —— Scroll reveal (package A) —— */
-    @supports (animation-timeline: view()) {
-      #profile .profile-card,
-      #links .link-hub,
-      #project .project-feature,
-      #contact .contact-list {
-        animation-name: reveal-in;
-        animation-duration: 1ms;
-        animation-timing-function: linear;
-        animation-fill-mode: both;
-        animation-timeline: view();
-        animation-range: entry 0% entry 100%;
+    /* —— Animations (package A) —— */
+    @media (prefers-reduced-motion: no-preference) {
+      .hero__accent-line {
+        animation: accent-line-grow 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.2s both;
       }
-    }
 
-    @supports not (animation-timeline: view()) {
       #profile .profile-card {
-        animation: reveal-in 0.6s ease-out 0.08s both;
+        animation: reveal-in 0.7s ease-out 0.12s both;
       }
 
       #links .link-hub {
-        animation: reveal-in 0.6s ease-out 0.16s both;
+        animation: reveal-in 0.7s ease-out 0.28s both;
       }
 
       #project .project-feature {
-        animation: reveal-in 0.6s ease-out 0.24s both;
+        animation: reveal-in 0.7s ease-out 0.44s both;
       }
 
       #contact .contact-list {
-        animation: reveal-in 0.6s ease-out 0.32s both;
+        animation: reveal-in 0.7s ease-out 0.6s both;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .hero__accent-line {
-        animation: none;
-        transform: none;
-        opacity: 1;
-      }
-
-      #profile .profile-card,
-      #links .link-hub,
-      #project .project-feature,
-      #contact .contact-list {
-        animation: none;
-        opacity: 1;
-        transform: none;
-      }
-
       .link-card:hover .link-card__icon,
       .link-card:focus-visible .link-card__icon,
       .link-card:hover,
