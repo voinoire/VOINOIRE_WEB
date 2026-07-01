@@ -5,6 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="{% block meta_description %}{% endblock %}">
   <title>{% block title %}{% endblock %}</title>
+  <link rel="icon" href="{{ assets_prefix }}favicon.svg" type="image/svg+xml">
+  {% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}">{% endif %}
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="{% if lang == 'ru' %}ru_RU{% else %}en_US{% endif %}">
+  <meta property="og:title" content="{% block og_title %}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{% endblock %}">
+  {% if og_image_url %}<meta property="og:image" content="{{ og_image_url }}">{% endif %}
+  {% if canonical_url %}<meta property="og:url" content="{{ canonical_url }}">{% endif %}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="{% block twitter_title %}{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}{% endblock %}">
+  {% if og_image_url %}<meta name="twitter:image" content="{{ og_image_url }}">{% endif %}
   <style>
     :root {
       --color-bg: #f7f7f8;
@@ -12,11 +24,25 @@
       --color-text: #1a1a1a;
       --color-muted: #6b7280;
       --color-accent: #2563eb;
+      --color-accent-soft: #eff6ff;
       --color-border: #e5e7eb;
       --radius: 12px;
+      --radius-sm: 8px;
       --shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
       --max-width: 960px;
       --header-height: 64px;
+      --space-xs: 0.5rem;
+      --space-sm: 0.75rem;
+      --space-md: 1rem;
+      --space-lg: 1.5rem;
+      --space-xl: 2rem;
+      --space-2xl: 3rem;
+      --space-3xl: 4rem;
+      --font-size-sm: 0.875rem;
+      --font-size-base: 1.0625rem;
+      --font-size-lg: 1.125rem;
+      --transition: 0.2s ease;
     }
 
     * {
@@ -27,19 +53,54 @@
 
     html {
       scroll-behavior: smooth;
+      scroll-padding-top: calc(var(--header-height) + var(--space-md));
     }
 
     body {
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      font-size: 17px;
-      line-height: 1.6;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      font-size: var(--font-size-base);
+      line-height: 1.65;
       color: var(--color-text);
       background: var(--color-bg);
+      -webkit-font-smoothing: antialiased;
     }
 
     a {
       color: inherit;
       text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    a:focus-visible,
+    summary:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+      border-radius: var(--radius-sm);
+    }
+
+    code {
+      font-family: ui-monospace, "Cascadia Code", "Segoe UI Mono", monospace;
+      font-size: 0.9em;
+      padding: 0.1em 0.35em;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      z-index: 100;
+      padding: var(--space-sm) var(--space-md);
+      background: var(--color-accent);
+      color: #fff;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+    }
+
+    .skip-link:focus {
+      left: var(--space-md);
+      top: var(--space-md);
     }
 
     .container {
@@ -47,14 +108,15 @@
       margin-inline: auto;
     }
 
-    /* Header */
+    /* —— Header —— */
     .site-header {
       position: sticky;
       top: 0;
-      z-index: 10;
-      height: var(--header-height);
-      background: rgba(247, 247, 248, 0.9);
-      backdrop-filter: blur(8px);
+      z-index: 20;
+      min-height: var(--header-height);
+      background: rgba(247, 247, 248, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--color-border);
     }
 
@@ -62,19 +124,24 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: var(--header-height);
-      gap: 1rem;
+      min-height: var(--header-height);
+      gap: var(--space-md);
     }
 
     .logo {
       font-weight: 600;
+      font-size: var(--font-size-lg);
       letter-spacing: -0.02em;
+      flex-shrink: 0;
+    }
+
+    .logo:hover {
+      color: var(--color-accent);
     }
 
     .nav {
       display: flex;
       align-items: center;
-      gap: 1.25rem;
       font-size: 0.95rem;
     }
 
@@ -88,6 +155,7 @@
       gap: 0.35rem;
       font-size: 0.85rem;
       color: var(--color-muted);
+      flex-shrink: 0;
     }
 
     .lang-switch a {
@@ -110,51 +178,95 @@
       opacity: 0.4;
     }
 
+  /* Mobile menu: <details> / <summary> */
+    .nav-toggle {
+      display: none;
+      position: relative;
+    }
+
     .nav-toggle summary {
       list-style: none;
       cursor: pointer;
-      padding: 0.35rem 0.6rem;
+      padding: 0.4rem 0.75rem;
       border: 1px solid var(--color-border);
-      border-radius: 8px;
+      border-radius: var(--radius-sm);
       font-size: 0.85rem;
+      font-weight: 500;
+      background: var(--color-surface);
+      transition: border-color var(--transition), background var(--transition);
     }
 
     .nav-toggle summary::-webkit-details-marker {
       display: none;
     }
 
+    .nav-toggle summary:hover {
+      border-color: var(--color-accent);
+    }
+
+    .nav-toggle[open] summary {
+      border-color: var(--color-accent);
+      background: var(--color-accent-soft);
+      color: var(--color-accent);
+    }
+
     .nav-panel {
+      position: absolute;
+      right: 0;
+      top: calc(100% + var(--space-xs));
+      min-width: 12rem;
+      padding: var(--space-md);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      z-index: 30;
+    }
+
+    .nav-panel-list {
+      list-style: none;
       display: flex;
       flex-direction: column;
-      gap: 0.75rem;
-      padding-top: 1rem;
+      gap: var(--space-xs);
+    }
+
+    .nav-panel-list a {
+      display: block;
+      padding: 0.5rem 0.6rem;
+      border-radius: var(--radius-sm);
+      transition: background var(--transition);
+    }
+
+    .nav-panel-list a:hover {
+      background: var(--color-accent-soft);
+    }
+
+    .nav-panel .lang-switch {
+      margin-top: var(--space-sm);
+      padding-top: var(--space-sm);
+      border-top: 1px solid var(--color-border);
     }
 
     .nav-desktop {
       display: flex;
+      align-items: center;
+      gap: var(--space-lg);
     }
 
-    .nav-toggle {
-      display: none;
+    .nav-list {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
     }
 
-    @media (max-width: 768px) {
-      .nav-desktop {
-        display: none;
-      }
-
-      .nav-toggle {
-        display: block;
-      }
-    }
-
-    /* Sections */
+    /* —— Main & sections —— */
     main {
-      padding-block: 2rem 4rem;
+      padding-block: var(--space-xl) var(--space-3xl);
     }
 
     section {
-      padding-block: 3rem;
+      padding-block: var(--space-2xl);
     }
 
     section:not(:last-child) {
@@ -162,131 +274,468 @@
     }
 
     .section-label {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.1em;
       color: var(--color-muted);
-      margin-bottom: 0.75rem;
+      margin-bottom: var(--space-sm);
     }
 
     h1, h2, h3 {
       line-height: 1.2;
       letter-spacing: -0.02em;
+      font-weight: 600;
     }
 
     h1 {
       font-size: clamp(2rem, 5vw, 2.75rem);
-      margin-bottom: 0.75rem;
+      margin-bottom: var(--space-sm);
     }
 
     h2 {
       font-size: clamp(1.5rem, 3vw, 2rem);
-      margin-bottom: 1rem;
+      margin-bottom: var(--space-md);
     }
 
-    .hero__tagline {
-      font-size: 1.15rem;
-      color: var(--color-muted);
-      max-width: 36ch;
-    }
-
-    .hero__accent-line {
-      width: 48px;
-      height: 3px;
-      background: var(--color-accent);
-      border-radius: 999px;
-      margin-bottom: 1.25rem;
-    }
-
-    /* Cards */
-    .card-grid {
-      display: grid;
-      gap: 1rem;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    }
-
-    .card {
+    #profile .profile-card {
+      max-width: 65ch;
+      padding: var(--space-lg);
       background: var(--color-surface);
       border: 1px solid var(--color-border);
       border-radius: var(--radius);
-      padding: 1.25rem;
       box-shadow: var(--shadow);
-      transition: border-color 0.2s, transform 0.2s;
     }
 
-    .card:hover {
-      border-color: var(--color-accent);
+    #profile p {
+      color: var(--color-text);
+    }
+
+    #profile p + p {
+      margin-top: var(--space-md);
+    }
+
+    #links .section-intro {
+      max-width: 42ch;
+      color: var(--color-muted);
+      font-size: var(--font-size-sm);
+      margin-bottom: var(--space-lg);
+    }
+
+    /* —— Link hub (#links) —— */
+    .link-hub {
+      list-style: none;
+      display: grid;
+      gap: var(--space-md);
+      grid-template-columns: 1fr;
+      padding: 0;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      padding: var(--space-md) var(--space-lg);
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+    }
+
+    .link-card:hover,
+    .link-card:focus-visible {
+      border-color: color-mix(in srgb, var(--link-accent, var(--color-accent)) 45%, var(--color-border));
+      box-shadow: var(--shadow-md);
       transform: translateY(-2px);
     }
 
-    .card h3 {
-      font-size: 1.05rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .card p {
-      color: var(--color-muted);
-      font-size: 0.95rem;
-    }
-
-    .tags {
+    .link-card__icon {
+      flex-shrink: 0;
+      width: 2.75rem;
+      height: 2.75rem;
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 1rem;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
+      background: var(--link-accent, var(--color-accent));
+      box-shadow: 0 2px 8px color-mix(in srgb, var(--link-accent, var(--color-accent)) 35%, transparent);
     }
 
-    .tag {
-      font-size: 0.8rem;
-      padding: 0.25rem 0.65rem;
-      border-radius: 999px;
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      color: var(--color-muted);
-    }
-
-    .contact-list {
-      list-style: none;
+    .link-card__body {
+      flex: 1;
+      min-width: 0;
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 0.15rem;
+    }
+
+    .link-card__name {
+      font-weight: 600;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .link-card__hint {
+      font-size: var(--font-size-sm);
+      color: var(--color-muted);
+    }
+
+    .link-card__arrow {
+      flex-shrink: 0;
+      font-size: 1.1rem;
+      color: var(--color-muted);
+      transition: transform var(--transition), color var(--transition);
+    }
+
+    .link-card:hover .link-card__arrow {
+      color: var(--link-accent, var(--color-accent));
+      transform: translateX(4px);
+    }
+
+    .link-card--telegram { --link-accent: #229ed9; }
+    .link-card--vk { --link-accent: #0077ff; }
+    .link-card--youtube { --link-accent: #ff0000; }
+    .link-card--instagram { --link-accent: #e4405f; }
+    .link-card--github { --link-accent: #24292f; }
+
+    /* —— Single project (#project) —— */
+    .project-feature {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+
+    .project-feature:hover {
+      border-color: color-mix(in srgb, var(--color-accent) 35%, var(--color-border));
+      box-shadow: var(--shadow-md);
+    }
+
+    .project-feature__media {
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      background: var(--color-bg);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .project-feature__media img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .project-feature:hover .project-feature__media img {
+      transform: scale(1.02);
+    }
+
+    .project-feature__body {
+      padding: var(--space-lg);
+    }
+
+    .project-feature__title {
+      font-size: clamp(1.25rem, 3vw, 1.5rem);
+      margin-bottom: var(--space-sm);
+    }
+
+    .visually-hidden {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .project-feature__text {
+      color: var(--color-muted);
+      font-size: var(--font-size-sm);
+      line-height: 1.6;
+      max-width: 60ch;
+    }
+
+    .project-feature__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      margin-top: var(--space-lg);
+      padding: 0.65rem 1.25rem;
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: #fff;
+      background: var(--color-accent);
+      border-radius: 999px;
+      box-shadow: 0 2px 10px color-mix(in srgb, var(--color-accent) 35%, transparent);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .project-feature__cta::after {
+      content: "→";
+      transition: transform var(--transition);
+    }
+
+    .project-feature__cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px color-mix(in srgb, var(--color-accent) 40%, transparent);
+    }
+
+    .project-feature__cta:hover::after {
+      transform: translateX(3px);
+    }
+
+    /* —— Hero —— */
+    .hero {
+      padding-top: var(--space-lg);
+    }
+
+    .hero__inner {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-lg);
+    }
+
+    .hero__avatar {
+      flex-shrink: 0;
+    }
+
+    .hero__avatar img {
+      display: block;
+      width: clamp(7.5rem, 22vw, 12.5rem);
+      height: auto;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: var(--radius);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-md);
+      background: var(--color-surface);
+    }
+
+    .hero__content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .hero__tagline {
+      font-size: var(--font-size-lg);
+      color: var(--color-muted);
+      max-width: 38ch;
+      line-height: 1.5;
+    }
+
+    .hero__accent-line {
+      width: 3rem;
+      height: 3px;
+      background: var(--color-accent);
+      border-radius: 999px;
+      margin-bottom: var(--space-md);
+    }
+
+    /* —— Contact —— */
+    #contact .contact-list {
+      list-style: none;
+      max-width: 28rem;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius);
+      padding: var(--space-sm) var(--space-lg);
+      box-shadow: var(--shadow);
+    }
+
+    .contact-list li {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: var(--space-xs) var(--space-sm);
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .contact-list li:last-child {
+      border-bottom: none;
+      padding-bottom: var(--space-sm);
+    }
+
+    .contact-list li span {
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--color-muted);
+      min-width: 4.5rem;
     }
 
     .contact-list a {
       color: var(--color-accent);
+      font-weight: 500;
     }
 
     .contact-list a:hover {
       text-decoration: underline;
     }
 
-    /* Footer */
+    /* —— Footer —— */
     .site-footer {
-      padding-block: 2rem;
+      padding-block: var(--space-xl);
       border-top: 1px solid var(--color-border);
       color: var(--color-muted);
-      font-size: 0.9rem;
+      font-size: var(--font-size-sm);
+    }
+
+    .site-footer p + p {
+      margin-top: var(--space-xs);
+    }
+
+    .footer-resume a {
+      color: var(--color-accent);
+      font-weight: 500;
+    }
+
+    .footer-resume a:hover {
+      text-decoration: underline;
+    }
+
+    /* —— Tablet: ≥768px —— */
+    @media (min-width: 768px) {
+      .hero__inner {
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-xl);
+      }
+
+      .link-hub {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-md);
+      }
+
+      .project-feature {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: stretch;
+      }
+
+      .project-feature__media {
+        aspect-ratio: auto;
+        min-height: 100%;
+        border-bottom: none;
+        border-right: 1px solid var(--color-border);
+      }
+
+      .project-feature__body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: var(--space-xl);
+      }
+    }
+
+    /* —— Desktop: ≥1024px —— */
+    @media (min-width: 1024px) {
+      :root {
+        --max-width: 1080px;
+        --font-size-base: 1.125rem;
+      }
+
+      main {
+        padding-block: var(--space-2xl) var(--space-3xl);
+      }
+
+      section {
+        padding-block: var(--space-3xl);
+      }
+
+      .hero {
+        padding-top: var(--space-xl);
+      }
+
+      .link-hub {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-lg);
+      }
+
+      .nav-list a {
+        position: relative;
+      }
+
+      .nav-list a::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -4px;
+        width: 0;
+        height: 2px;
+        background: var(--color-accent);
+        border-radius: 1px;
+        transition: width var(--transition);
+      }
+
+      .nav-list a:hover::after {
+        width: 100%;
+      }
+    }
+
+    /* —— Mobile: <768px —— */
+    @media (max-width: 768px) {
+      .site-header__inner {
+        align-items: center;
+      }
+
+      .nav-desktop {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .hero__inner {
+        align-items: center;
+        text-align: center;
+      }
+
+      .hero__accent-line {
+        margin-inline: auto;
+      }
+
+      .hero__tagline {
+        margin-inline: auto;
+      }
+
+      #contact .contact-list {
+        max-width: none;
+      }
     }
   </style>
   {% block extra_head %}{% endblock %}
 </head>
 <body>
+  <a class="skip-link" href="#main">{% if lang == 'ru' %}К основному содержанию{% else %}Skip to main content{% endif %}</a>
   <header class="site-header">
     <div class="container site-header__inner">
-      <a class="logo" href="#">{% block logo %}Profile{% endblock %}</a>
+      <a class="logo" href="#top">{% block logo %}Profile{% endblock %}</a>
 
       <nav class="nav" aria-label="{% if lang == 'ru' %}Основная навигация{% else %}Main navigation{% endif %}">
         <details class="nav-toggle">
           <summary>{% if lang == 'ru' %}Меню{% else %}Menu{% endif %}</summary>
           <div class="nav-panel">
-            {% block nav_mobile %}
-            <a href="#about">{% if lang == 'ru' %}Обо мне{% else %}About{% endif %}</a>
-            <a href="#skills">{% if lang == 'ru' %}Навыки{% else %}Skills{% endif %}</a>
-            <a href="#projects">{% if lang == 'ru' %}Проекты{% else %}Projects{% endif %}</a>
-            <a href="#contact">{% if lang == 'ru' %}Контакты{% else %}Contact{% endif %}</a>
-            {% endblock %}
-            <div class="lang-switch">
+            <ul class="nav-panel-list">
+              {% block nav_mobile %}
+              <li><a href="#profile">{% if lang == 'ru' %}Профиль{% else %}Profile{% endif %}</a></li>
+              <li><a href="#links">{% if lang == 'ru' %}Ссылки{% else %}Links{% endif %}</a></li>
+              <li><a href="#project">{% if lang == 'ru' %}Проект{% else %}Project{% endif %}</a></li>
+              <li><a href="#contact">{% if lang == 'ru' %}Контакты{% else %}Contact{% endif %}</a></li>
+              {% endblock %}
+            </ul>
+            <div class="lang-switch" aria-label="{% if lang == 'ru' %}Язык{% else %}Language{% endif %}">
               {% if lang == 'ru' %}
               <span class="is-active">RU</span>
               <span class="lang-switch__sep">|</span>
@@ -300,13 +749,15 @@
           </div>
         </details>
         <div class="nav-desktop">
-          {% block nav_desktop %}
-          <a href="#about">{% if lang == 'ru' %}Обо мне{% else %}About{% endif %}</a>
-          <a href="#skills">{% if lang == 'ru' %}Навыки{% else %}Skills{% endif %}</a>
-          <a href="#projects">{% if lang == 'ru' %}Проекты{% else %}Projects{% endif %}</a>
-          <a href="#contact">{% if lang == 'ru' %}Контакты{% else %}Contact{% endif %}</a>
-          {% endblock %}
-          <div class="lang-switch">
+          <ul class="nav-list">
+            {% block nav_desktop %}
+            <li><a href="#profile">{% if lang == 'ru' %}Профиль{% else %}Profile{% endif %}</a></li>
+            <li><a href="#links">{% if lang == 'ru' %}Ссылки{% else %}Links{% endif %}</a></li>
+            <li><a href="#project">{% if lang == 'ru' %}Проект{% else %}Project{% endif %}</a></li>
+            <li><a href="#contact">{% if lang == 'ru' %}Контакты{% else %}Contact{% endif %}</a></li>
+            {% endblock %}
+          </ul>
+          <div class="lang-switch" aria-label="{% if lang == 'ru' %}Язык{% else %}Language{% endif %}">
             {% if lang == 'ru' %}
             <span class="is-active">RU</span>
             <span class="lang-switch__sep">|</span>
@@ -322,7 +773,7 @@
     </div>
   </header>
 
-  <main class="container">
+  <main id="main" class="container">
     {% block content %}{% endblock %}
   </main>
 
@@ -330,6 +781,17 @@
     <div class="container">
       {% block footer %}
       <p>&copy; 2026. {% if lang == 'ru' %}Цифровой профиль{% else %}Digital profile{% endif %}.</p>
+      <p class="footer-resume">
+        {% if lang == 'ru' %}
+        Резюме:
+        <a href="{{ assets_prefix }}resume.pdf">PDF</a>
+        <span>(добавьте файл в <code>assets/resume.pdf</code>)</span>
+        {% else %}
+        Resume:
+        <a href="{{ assets_prefix }}resume.pdf">PDF</a>
+        <span>(add file to <code>assets/resume.pdf</code>)</span>
+        {% endif %}
+      </p>
       {% endblock %}
     </div>
   </footer>

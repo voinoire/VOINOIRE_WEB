@@ -1,57 +1,134 @@
 {% extends "base.html" %}
 
 {% block title %}Name Surname — digital profile{% endblock %}
-{% block meta_description %}Short description for search engines. Replace with your own text.{% endblock %}
+{% block meta_description %}One link to my digital profile, socials, and project. Replace with your own text.{% endblock %}
+{% block og_title %}Name Surname — digital profile{% endblock %}
+{% block og_description %}One link to my digital profile, socials, and project. Replace with your own text.{% endblock %}
+{% block twitter_title %}Name Surname — digital profile{% endblock %}
+{% block twitter_description %}One link to my digital profile, socials, and project. Replace with your own text.{% endblock %}
 {% block logo %}Name S.{% endblock %}
 
 {% block content %}
-<section class="hero" id="top">
-  <div class="hero__accent-line"></div>
-  <h1>Name Surname</h1>
-  <p class="hero__tagline">A short tagline about what you do. Write 1–2 sentences.</p>
-</section>
-
-<section id="about">
-  <p class="section-label">About</p>
-  <h2>Who I am</h2>
-  <p>
-    Your bio goes here. Describe your interests, what you offer, and what you are
-    looking for. This is a placeholder — replace it manually in
-    <code>templates/index.en.html</code>.
-  </p>
-</section>
-
-<section id="skills">
-  <p class="section-label">Skills</p>
-  <h2>Stack &amp; tools</h2>
-  <div class="tags">
-    <span class="tag">HTML</span>
-    <span class="tag">Python</span>
-    <span class="tag">…</span>
+<section class="hero" id="top" aria-labelledby="hero-heading">
+  <div class="hero__inner">
+    <figure class="hero__avatar">
+      <img
+        src="{{ assets_prefix }}images/avatar-placeholder.svg"
+        width="400"
+        height="400"
+        alt="Photo: Name Surname"
+      >
+    </figure>
+    <div class="hero__content">
+      <div class="hero__accent-line" aria-hidden="true"></div>
+      <h1 id="hero-heading">Name Surname</h1>
+      <p class="hero__tagline">A short tagline — who you are at a glance. One link for everything.</p>
+    </div>
   </div>
 </section>
 
-<section id="projects">
-  <p class="section-label">Projects</p>
-  <h2>Selected work</h2>
-  <div class="card-grid">
-    <article class="card">
-      <h3>Project name</h3>
-      <p>Short description. Add a link and details later.</p>
-    </article>
-    <article class="card">
-      <h3>Second project</h3>
-      <p>Another placeholder card to keep the page structure.</p>
-    </article>
+<section id="profile" aria-labelledby="profile-heading">
+  <p class="section-label">Digital profile</p>
+  <h2 id="profile-heading">Who I am online</h2>
+  <div class="profile-card">
+    <p>
+      Your main text about your digital identity: how you present yourself online,
+      what you do on the internet, what you're into. Write in plain language — for
+      friends and followers, not a job application.
+    </p>
+    <p>
+      Replace this text manually in <code>templates/index.en.html</code>.
+    </p>
   </div>
 </section>
 
-<section id="contact">
+<section id="links" aria-labelledby="links-heading">
+  <p class="section-label">Find me</p>
+  <h2 id="links-heading">My links</h2>
+  <p class="section-intro">Add your profiles — name, URL, and a short hint.</p>
+  <ul class="link-hub" role="list">
+    <li>
+      <a class="link-card link-card--telegram" href="https://t.me/your_username" rel="noopener noreferrer" target="_blank">
+        <span class="link-card__icon" aria-hidden="true">TG</span>
+        <span class="link-card__body">
+          <span class="link-card__name">Telegram</span>
+          <span class="link-card__hint">Direct messages</span>
+        </span>
+        <span class="link-card__arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+    <li>
+      <a class="link-card link-card--vk" href="https://vk.com/your_username" rel="noopener noreferrer" target="_blank">
+        <span class="link-card__icon" aria-hidden="true">VK</span>
+        <span class="link-card__body">
+          <span class="link-card__name">VK</span>
+          <span class="link-card__hint">Posts and updates</span>
+        </span>
+        <span class="link-card__arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+    <li>
+      <a class="link-card link-card--youtube" href="https://youtube.com/@your_channel" rel="noopener noreferrer" target="_blank">
+        <span class="link-card__icon" aria-hidden="true">YT</span>
+        <span class="link-card__body">
+          <span class="link-card__name">YouTube</span>
+          <span class="link-card__hint">Videos</span>
+        </span>
+        <span class="link-card__arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+    <li>
+      <a class="link-card link-card--instagram" href="https://instagram.com/your_username" rel="noopener noreferrer" target="_blank">
+        <span class="link-card__icon" aria-hidden="true">IG</span>
+        <span class="link-card__body">
+          <span class="link-card__name">Instagram</span>
+          <span class="link-card__hint">Photos and stories</span>
+        </span>
+        <span class="link-card__arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+  </ul>
+</section>
+
+<section id="project" aria-labelledby="project-heading">
+  <p class="section-label">My project</p>
+  <h2 id="project-heading" class="visually-hidden">My project</h2>
+  <article class="project-feature">
+    <div class="project-feature__media">
+      <img
+        src="{{ assets_prefix }}images/project-1-placeholder.svg"
+        width="1200"
+        height="675"
+        alt="Screenshot: project name"
+      >
+    </div>
+    <div class="project-feature__body">
+      <h3 class="project-feature__title">Project name</h3>
+      <p class="project-feature__text">
+        Briefly: what the project is, why it matters to you, and what came out of it.
+        One card — one main project, not a full portfolio.
+      </p>
+      <a class="project-feature__cta" href="#" rel="noopener noreferrer" target="_blank">Open project</a>
+    </div>
+  </article>
+</section>
+
+<section id="contact" aria-labelledby="contact-heading">
   <p class="section-label">Contact</p>
-  <h2>Get in touch</h2>
+  <h2 id="contact-heading">Message me directly</h2>
   <ul class="contact-list">
-    <li>Email: <a href="mailto:you@example.com">you@example.com</a></li>
-    <li>GitHub: <a href="#">link coming soon</a></li>
+    <li>
+      <span>Email:</span>
+      <a href="mailto:you@example.com">you@example.com</a>
+    </li>
+    <li>
+      <span>Telegram:</span>
+      <a href="https://t.me/your_username" rel="noopener noreferrer" target="_blank">@your_username</a>
+    </li>
+    <li>
+      <span>GitHub:</span>
+      <a href="https://github.com/your_username" rel="noopener noreferrer" target="_blank">your_username</a>
+    </li>
   </ul>
 </section>
 {% endblock %}

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Open Graph image placeholder">
+  <rect width="1200" height="630" fill="#f7f7f8"/>
+  <rect x="48" y="48" width="1104" height="534" rx="20" fill="#ffffff" stroke="#e5e7eb"/>
+  <rect x="96" y="140" width="72" height="8" rx="4" fill="#2563eb"/>
+  <text x="96" y="220" font-family="system-ui,sans-serif" font-size="52" font-weight="600" fill="#1a1a1a">Your name</text>
+  <text x="96" y="290" font-family="system-ui,sans-serif" font-size="28" fill="#6b7280">Digital profile - one link for everything</text>
+  <text x="96" y="520" font-family="system-ui,sans-serif" font-size="18" fill="#9ca3af">1200x630 - replace with og.png</text>
+</svg>

@@ -1,57 +1,134 @@
 {% extends "base.html" %}
 
 {% block title %}Имя Фамилия — цифровой профиль{% endblock %}
-{% block meta_description %}Краткое описание для поисковиков. Замените этот текст на своё.{% endblock %}
+{% block meta_description %}Одна ссылка на мой диджитал-профиль, соцсети и проект. Замените этот текст на своё.{% endblock %}
+{% block og_title %}Имя Фамилия — цифровой профиль{% endblock %}
+{% block og_description %}Одна ссылка на мой диджитал-профиль, соцсети и проект. Замените на своё.{% endblock %}
+{% block twitter_title %}Имя Фамилия — цифровой профиль{% endblock %}
+{% block twitter_description %}Одна ссылка на мой диджитал-профиль, соцсети и проект. Замените на своё.{% endblock %}
 {% block logo %}Имя Ф.{% endblock %}
 
 {% block content %}
-<section class="hero" id="top">
-  <div class="hero__accent-line"></div>
-  <h1>Имя Фамилия</h1>
-  <p class="hero__tagline">Короткий слоган о том, чем вы занимаетесь. Напишите 1–2 предложения.</p>
-</section>
-
-<section id="about">
-  <p class="section-label">Обо мне</p>
-  <h2>Кто я</h2>
-  <p>
-    Здесь ваш текст о себе. Расскажите, чем интересуетесь, чем полезны,
-    что ищете. Этот абзац — placeholder: замените его своим текстом вручную
-    в файле <code>templates/index.ru.html</code>.
-  </p>
-</section>
-
-<section id="skills">
-  <p class="section-label">Навыки</p>
-  <h2>Стек и инструменты</h2>
-  <div class="tags">
-    <span class="tag">HTML</span>
-    <span class="tag">Python</span>
-    <span class="tag">…</span>
+<section class="hero" id="top" aria-labelledby="hero-heading">
+  <div class="hero__inner">
+    <figure class="hero__avatar">
+      <img
+        src="{{ assets_prefix }}images/avatar-placeholder.svg"
+        width="400"
+        height="400"
+        alt="Фото: Имя Фамилия"
+      >
+    </figure>
+    <div class="hero__content">
+      <div class="hero__accent-line" aria-hidden="true"></div>
+      <h1 id="hero-heading">Имя Фамилия</h1>
+      <p class="hero__tagline">Короткий слоган — кто вы в одном взгляде. Одна ссылка на всё.</p>
+    </div>
   </div>
 </section>
 
-<section id="projects">
-  <p class="section-label">Проекты</p>
-  <h2>Избранное</h2>
-  <div class="card-grid">
-    <article class="card">
-      <h3>Название проекта</h3>
-      <p>Краткое описание. Ссылку и детали добавите позже.</p>
-    </article>
-    <article class="card">
-      <h3>Второй проект</h3>
-      <p>Ещё одна карточка-заглушка для структуры страницы.</p>
-    </article>
+<section id="profile" aria-labelledby="profile-heading">
+  <p class="section-label">Цифровой профиль</p>
+  <h2 id="profile-heading">Кто я в интернете</h2>
+  <div class="profile-card">
+    <p>
+      Здесь главный текст о вашем диджитал-образе: как вы выглядите в интернете,
+      чем занимаетесь онлайн, что вам интересно. Напишите простым языком — для друзей
+      и подписчиков, не для резюме.
+    </p>
+    <p>
+      Замените этот текст вручную в <code>templates/index.ru.html</code>.
+    </p>
   </div>
 </section>
 
-<section id="contact">
+<section id="links" aria-labelledby="links-heading">
+  <p class="section-label">Везде я</p>
+  <h2 id="links-heading">Найти меня</h2>
+  <p class="section-intro">Добавьте свои профили — название, URL и короткая подпись.</p>
+  <ul class="link-hub" role="list">
+    <li>
+      <a class="link-card link-card--telegram" href="https://t.me/your_username" rel="noopener noreferrer" target="_blank">
+        <span class="link-card__icon" aria-hidden="true">TG</span>
+        <span class="link-card__body">
+          <span class="link-card__name">Telegram</span>
+          <span class="link-card__hint">Личные сообщения</span>
+        </span>
+        <span class="link-card__arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+    <li>
+      <a class="link-card link-card--vk" href="https://vk.com/your_username" rel="noopener noreferrer" target="_blank">
+        <span class="link-card__icon" aria-hidden="true">VK</span>
+        <span class="link-card__body">
+          <span class="link-card__name">ВКонтакте</span>
+          <span class="link-card__hint">Посты и новости</span>
+        </span>
+        <span class="link-card__arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+    <li>
+      <a class="link-card link-card--youtube" href="https://youtube.com/@your_channel" rel="noopener noreferrer" target="_blank">
+        <span class="link-card__icon" aria-hidden="true">YT</span>
+        <span class="link-card__body">
+          <span class="link-card__name">YouTube</span>
+          <span class="link-card__hint">Видео и ролики</span>
+        </span>
+        <span class="link-card__arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+    <li>
+      <a class="link-card link-card--instagram" href="https://instagram.com/your_username" rel="noopener noreferrer" target="_blank">
+        <span class="link-card__icon" aria-hidden="true">IG</span>
+        <span class="link-card__body">
+          <span class="link-card__name">Instagram</span>
+          <span class="link-card__hint">Фото и stories</span>
+        </span>
+        <span class="link-card__arrow" aria-hidden="true">→</span>
+      </a>
+    </li>
+  </ul>
+</section>
+
+<section id="project" aria-labelledby="project-heading">
+  <p class="section-label">Мой проект</p>
+  <h2 id="project-heading" class="visually-hidden">Мой проект</h2>
+  <article class="project-feature">
+    <div class="project-feature__media">
+      <img
+        src="{{ assets_prefix }}images/project-1-placeholder.svg"
+        width="1200"
+        height="675"
+        alt="Скриншот: название проекта"
+      >
+    </div>
+    <div class="project-feature__body">
+      <h3 class="project-feature__title">Название проекта</h3>
+      <p class="project-feature__text">
+        Коротко: что это за проект, зачем он вам и что получилось.
+        Одна карточка — один главный проект, не портфолио.
+      </p>
+      <a class="project-feature__cta" href="#" rel="noopener noreferrer" target="_blank">Открыть проект</a>
+    </div>
+  </article>
+</section>
+
+<section id="contact" aria-labelledby="contact-heading">
   <p class="section-label">Контакты</p>
-  <h2>Связаться</h2>
+  <h2 id="contact-heading">Написать напрямую</h2>
   <ul class="contact-list">
-    <li>Email: <a href="mailto:you@example.com">you@example.com</a></li>
-    <li>GitHub: <a href="#">ссылка добавится позже</a></li>
+    <li>
+      <span>Email:</span>
+      <a href="mailto:you@example.com">you@example.com</a>
+    </li>
+    <li>
+      <span>Telegram:</span>
+      <a href="https://t.me/your_username" rel="noopener noreferrer" target="_blank">@your_username</a>
+    </li>
+    <li>
+      <span>GitHub:</span>
+      <a href="https://github.com/your_username" rel="noopener noreferrer" target="_blank">your_username</a>
+    </li>
   </ul>
 </section>
 {% endblock %}

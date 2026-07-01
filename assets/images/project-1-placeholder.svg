@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Project screenshot placeholder">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#dbeafe"/>
+      <stop offset="100%" stop-color="#f3f4f6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="675" fill="url(#sky)"/>
+  <rect x="80" y="120" width="1040" height="435" rx="16" fill="#ffffff" stroke="#e5e7eb"/>
+  <rect x="120" y="160" width="200" height="16" rx="8" fill="#2563eb" opacity="0.85"/>
+  <rect x="120" y="200" width="360" height="12" rx="6" fill="#e5e7eb"/>
+  <rect x="120" y="230" width="300" height="12" rx="6" fill="#e5e7eb"/>
+  <rect x="120" y="290" width="960" height="200" rx="12" fill="#eff6ff" stroke="#dbeafe"/>
+  <text x="600" y="400" text-anchor="middle" font-family="system-ui,sans-serif" font-size="22" fill="#6b7280">Project preview</text>
+  <text x="600" y="620" text-anchor="middle" font-family="system-ui,sans-serif" font-size="16" fill="#9ca3af">1200x675 - replace with project.png</text>
+</svg>
